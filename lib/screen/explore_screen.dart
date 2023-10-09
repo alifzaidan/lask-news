@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lask_news_app/models/news_model.dart';
 
 var category = [
   "Travel",
@@ -9,53 +10,6 @@ var category = [
   "Economy",
   "Healthy",
   "Sports"
-];
-
-class ExploreModel {
-  String title;
-  String image;
-  String category;
-  String author;
-  String date;
-
-  ExploreModel({
-    required this.title,
-    required this.image,
-    required this.category,
-    required this.author,
-    required this.date,
-  });
-}
-
-var explore = [
-  ExploreModel(
-    title: "Experience the Serenity of Japan's Traditional Countryside",
-    image: "sakura.png",
-    category: "Travel",
-    author: "Hilda Friesen",
-    date: "May 3, 2023",
-  ),
-  ExploreModel(
-    title: "A Journey Through Time: Discovering the Nile river",
-    image: "nile.png",
-    category: "Travel",
-    author: "Melissa White",
-    date: "May 7, 2023",
-  ),
-  ExploreModel(
-    title: "Chasing the Northern Lights: A Winter in Finland",
-    image: "winter.png",
-    category: "Travel",
-    author: "Hilda Friesen",
-    date: "May 12, 2023",
-  ),
-  ExploreModel(
-    title: "Chasing the Northern Lights: A Winter in Finland",
-    image: "winter.png",
-    category: "Travel",
-    author: "Hilda Friesen",
-    date: "May 12, 2023",
-  ),
 ];
 
 class ExploreScreen extends StatelessWidget {
@@ -76,11 +30,11 @@ class ExploreScreen extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              _headline(context),
+              _headline(context, headexp),
               const SizedBox(
                 height: 36,
               ),
-              _news(),
+              _news(explore),
             ],
           ),
         ),
@@ -132,12 +86,12 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Container _headline(BuildContext context) {
+  Container _headline(BuildContext context, List<NewsModel> headexp) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/article');
+          Navigator.pushNamed(context, '/article', arguments: headexp[0]);
         },
         highlightColor: Colors.grey[200],
         child: Column(
@@ -149,7 +103,7 @@ class ExploreScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Image.asset(
-                'assets/images/amazon.png',
+                'assets/images/${headexp[0].image}',
                 width: double.maxFinite,
                 height: 206,
                 fit: BoxFit.cover,
@@ -159,7 +113,7 @@ class ExploreScreen extends StatelessWidget {
               height: 16,
             ),
             Text(
-              'Uncovering the Hidden Gems of the Amazon Forest',
+              headexp[0].title,
               maxLines: 2,
               style: GoogleFonts.inter(
                 fontSize: 22,
@@ -182,7 +136,7 @@ class ExploreScreen extends StatelessWidget {
                   width: 8,
                 ),
                 Text(
-                  'Mr. Lana Kub',
+                  headexp[0].author,
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: const Color(0xFF6D6265),
@@ -193,7 +147,7 @@ class ExploreScreen extends StatelessWidget {
                   child: Center(child: Text('-')),
                 ),
                 Text(
-                  'May 1, 2023',
+                  headexp[0].date,
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: const Color(0xFF6D6265),
@@ -207,14 +161,14 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  ListView _news() {
+  ListView _news(List<NewsModel> explore) {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) => InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/article');
+          Navigator.pushNamed(context, '/article', arguments: explore[index]);
         },
         highlightColor: Colors.grey[200],
         child: Row(

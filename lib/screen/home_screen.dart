@@ -1,54 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-class NewsModel {
-  String name;
-  String image;
-  String category;
-
-  NewsModel({
-    required this.name,
-    required this.image,
-    required this.category,
-  });
-}
-
-var headline = [
-  NewsModel(
-    name: "Experience the Serenity of Japan's Traditional Countryside",
-    image: "japan.png",
-    category: "Technology",
-  ),
-  NewsModel(
-    name: "Discovering the Magic of Paris: A Journey through",
-    image: "paris.jpg",
-    category: "Technology",
-  ),
-  NewsModel(
-    name: "The Pros and Cons of Remote Work",
-    image: "mountain.png",
-    category: "Technology",
-  ),
-];
-
-var justforyou = [
-  NewsModel(
-    name: "The Pros and Cons of Remote Work",
-    image: "mountain.png",
-    category: "Technology",
-  ),
-  NewsModel(
-    name: "The Pros and Cons of Remote Work",
-    image: "waterfall.jpg",
-    category: "Technology",
-  ),
-  NewsModel(
-    name: "Experience the Serenity of Japan's Traditional Countryside",
-    image: "japan.png",
-    category: "Technology",
-  ),
-];
+import 'package:lask_news_app/models/news_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -133,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/article');
+            Navigator.pushNamed(context, '/article', arguments: news[index]);
           },
           highlightColor: Colors.grey[200],
           child: Column(
@@ -157,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 width: 269,
                 child: Text(
-                  news[index].name,
+                  news[index].title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: GoogleFonts.inter(

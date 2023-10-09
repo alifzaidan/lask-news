@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/splash',
+      initialRoute: '/',
       routes: {
-        '/splash': (context) => const SplashScreen(),
+        '/': (context) => const SplashScreen(),
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),
         '/article': (context) => const ArticleScreen(),

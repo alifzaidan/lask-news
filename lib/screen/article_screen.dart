@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lask_news_app/models/news_model.dart';
 
 class ArticleScreen extends StatelessWidget {
   const ArticleScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    final news = ModalRoute.of(context)!.settings.arguments as NewsModel;
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -17,20 +20,20 @@ class ArticleScreen extends StatelessWidget {
               expandedHeight: 200.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.asset(
-                  'assets/images/forest.png',
+                  'assets/images/${news.image}',
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ];
         },
-        body: _content(),
+        body: _content(news),
       ),
       bottomNavigationBar: _bottomNavigationBar(context),
     );
   }
 
-  Widget _content() {
+  Widget _content(NewsModel news) {
     return SingleChildScrollView(
       child: Stack(
         children: [
@@ -45,7 +48,7 @@ class ArticleScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'See How the Forest is Helping Our World',
+                  news.title,
                   style: GoogleFonts.inter(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
@@ -70,7 +73,7 @@ class ArticleScreen extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
-                      'Mr. Lana Kub',
+                      news.author,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -81,7 +84,7 @@ class ArticleScreen extends StatelessWidget {
                       child: Center(child: Text('-')),
                     ),
                     Text(
-                      'May 1, 2023',
+                      news.date,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -94,17 +97,15 @@ class ArticleScreen extends StatelessWidget {
                 ),
                 RichText(
                   text: TextSpan(
-                    text:
-                        "Forests are one of the most important natural resources that our planet possesses. Not only do they provide us with a diverse range of products such as timber, medicine, and food, but they also play a vital role in mitigating climate change and maintaining the overall health of our planet's ecosystems. In this article, we will explore the ways in which forests are helping our world.",
+                    text: news.description1,
                     style: GoogleFonts.merriweather(
                       color: Colors.black,
                       fontSize: 16,
                       height: 1.6,
                     ),
-                    children: const [
+                    children: [
                       TextSpan(
-                        text:
-                            "\n\nOne of the most important roles that forests play is in absorbing carbon dioxide from the atmosphere. Trees absorb carbon dioxide through photosynthesis and store it in their trunks, branches, and leaves. This carbon sequestration helps to mitigate climate change by reducing the amount of greenhouse gases in the atmosphere. Forests are estimated to absorb approximately 2.4 billion tonnes of carbon dioxide each year, which is equivalent to around 10% of global greenhouse gas emissions.",
+                        text: news.description2,
                       ),
                     ],
                   ),
