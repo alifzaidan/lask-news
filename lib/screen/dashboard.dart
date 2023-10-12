@@ -37,9 +37,10 @@ class _DashboardState extends State<Dashboard> {
   Widget _bottomNavigationBar() {
     return Container(
       padding: const EdgeInsets.all(16),
+      color: Colors.transparent,
       child: GNav(
         selectedIndex: _currentIndex,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         tabBackgroundColor: const Color(0xFF231F20),
         activeColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),

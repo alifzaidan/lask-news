@@ -3,14 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lask_news_app/models/news_model.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -47,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           RichText(
             text: TextSpan(
-              text: "Good Morning,\nAlif ",
+              text: "Good Morning,\nAlif",
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: const Color(0xFF6D6265),

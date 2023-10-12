@@ -90,7 +90,7 @@ final List<NewsModel> justforyou = [
   ),
 ];
 
-final List<NewsModel> twg = [
+final List<NewsModel> headexp = [
   NewsModel(
     title: "Uncovering the Hidden Gems of the Amazon Forest",
     image: "amazon.png",
