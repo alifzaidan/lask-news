@@ -3,8 +3,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lask_news_app/models/news_model.dart';
 
-class ArticleScreen extends StatelessWidget {
+class ArticleScreen extends StatefulWidget {
   const ArticleScreen({Key? key});
+
+  @override
+  State<ArticleScreen> createState() => _ArticleScreenState();
+}
+
+class _ArticleScreenState extends State<ArticleScreen> {
+  Color _colorsClap = Colors.black;
+  int _total = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,7 @@ class ArticleScreen extends StatelessWidget {
         },
         body: _content(news),
       ),
-      bottomNavigationBar: _bottomNavigationBar(context),
+      bottomNavigationBar: _bottomAppBar(context),
     );
   }
 
@@ -118,43 +126,70 @@ class ArticleScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomNavigationBar(BuildContext context) {
-    return BottomNavigationBar(
-      unselectedItemColor: Colors.black,
-      selectedItemColor: const Color(0xFF2D5BD0),
-      currentIndex: 1,
-      showSelectedLabels: false,
-      onTap: (int index) {
-        // Fungsi ini akan dipanggil saat tombol di BottomNavigationBar diklik
-        if (index == 0) {
-          // Navigasi kembali ke halaman sebelumnya
-          Navigator.pop(context);
-        } else if (index == 1) {
-          // Tambahkan fungsi untuk tombol "Like" di sini
-        } else if (index == 2) {
-          // Tambahkan fungsi untuk tombol "Save Bookmark" di sini
-        } else if (index == 3) {
-          // Tambahkan fungsi untuk tombol "Share" di sini
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.arrowLeft),
-          label: 'Back',
+  Widget _bottomAppBar(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.white,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.arrowLeft,
+                size: 20,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            const Spacer(),
+            StatefulBuilder(
+              builder: (context, setState) {
+                return IconButton(
+                  icon: FaIcon(
+                    FontAwesomeIcons.handsClapping,
+                    size: 20,
+                    color: _colorsClap,
+                  ),
+                  onPressed: () {
+                    setState(
+                      () {
+                        if (_colorsClap == Colors.black) {
+                          _colorsClap = const Color(0xFF2D5BD0);
+                          _total++;
+                        } else {
+                          _colorsClap = Colors.black;
+                          _total--;
+                        }
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            Text(_total.toString()),
+            const SizedBox(width: 8),
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.bookmark,
+                size: 20,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            ),
+            const SizedBox(width: 8),
+            IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.share,
+                size: 20,
+                color: Colors.black,
+              ),
+              onPressed: () {},
+            ),
+          ],
         ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.handsClapping),
-          label: 'Like',
-        ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.bookmark),
-          label: 'Save Bookmark',
-        ),
-        BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.share),
-          label: 'Share',
-        ),
-      ],
+      ),
     );
   }
 }
