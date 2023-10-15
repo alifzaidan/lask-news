@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lask_news_app/models/news_model.dart';
+import 'package:intl/intl.dart';
+import 'package:lask_news_app/models/article_model.dart';
+import 'package:lask_news_app/services/api_services.dart';
 
 var category = [
   "Travel",
@@ -12,8 +14,15 @@ var category = [
   "Sports"
 ];
 
-class ExploreScreen extends StatelessWidget {
+class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
+
+  @override
+  State<ExploreScreen> createState() => _ExploreScreenState();
+}
+
+class _ExploreScreenState extends State<ExploreScreen> {
+  ApiHeadline headline = ApiHeadline();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +39,7 @@ class ExploreScreen extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              _headline(context, headexp),
-              const SizedBox(
-                height: 36,
-              ),
-              _news(explore),
+              _news(),
             ],
           ),
         ),
@@ -86,12 +91,41 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  Container _headline(BuildContext context, List<NewsModel> headexp) {
+  Widget _news() {
+    return FutureBuilder(
+      future: headline.getArticle(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Article>? articles = snapshot.data;
+
+          return Column(
+            children: [
+              _headline(articles),
+              const SizedBox(
+                height: 36,
+              ),
+              _listnews(articles),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text("Error: ${snapshot.error}"),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _headline(List<Article>? articles) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/article', arguments: headexp[0]);
+          Navigator.pushNamed(context, '/article', arguments: articles?[0]);
         },
         highlightColor: Colors.grey[200],
         child: Column(
@@ -102,8 +136,9 @@ class ExploreScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Image.asset(
-                'assets/images/${headexp[0].image}',
+              child: Image.network(
+                articles?[0].urlToImage ??
+                    "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
                 width: double.maxFinite,
                 height: 206,
                 fit: BoxFit.cover,
@@ -113,7 +148,7 @@ class ExploreScreen extends StatelessWidget {
               height: 16,
             ),
             Text(
-              headexp[0].title,
+              articles?[0].title ?? "Judul Tidak Ada",
               maxLines: 2,
               style: GoogleFonts.inter(
                 fontSize: 22,
@@ -136,7 +171,7 @@ class ExploreScreen extends StatelessWidget {
                   width: 8,
                 ),
                 Text(
-                  headexp[0].author,
+                  articles?[0].author ?? "Anonimous",
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: const Color(0xFF6D6265),
@@ -147,7 +182,8 @@ class ExploreScreen extends StatelessWidget {
                   child: Center(child: Text('-')),
                 ),
                 Text(
-                  headexp[0].date,
+                  DateFormat('dd MMM yyyy').format(DateTime.parse(
+                      articles?[0].publishedAt ?? "Tanggal Tidak Ditemukan")),
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: const Color(0xFF6D6265),
@@ -161,14 +197,15 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 
-  ListView _news(List<NewsModel> explore) {
+  Widget _listnews(List<Article>? articles) {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) => InkWell(
         onTap: () {
-          Navigator.pushNamed(context, '/article', arguments: explore[index]);
+          Navigator.pushNamed(context, '/article',
+              arguments: articles[index + 1]);
         },
         highlightColor: Colors.grey[200],
         child: Row(
@@ -180,7 +217,7 @@ class ExploreScreen extends StatelessWidget {
                 SizedBox(
                   width: MediaQuery.of(context).size.width / 2,
                   child: Text(
-                    explore[index].title,
+                    articles[index + 1].title ?? "Judul Tidak Ada",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.inter(
@@ -201,11 +238,14 @@ class ExploreScreen extends StatelessWidget {
                     const SizedBox(
                       width: 8,
                     ),
-                    Text(
-                      explore[index].author,
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: const Color(0xFF6D6265),
+                    SizedBox(
+                      child: Text(
+                        articles[index + 1].author?.substring(0, 10) ??
+                            "Anonimous",
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: const Color(0xFF6D6265),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -213,7 +253,9 @@ class ExploreScreen extends StatelessWidget {
                       child: Center(child: Text('-')),
                     ),
                     Text(
-                      explore[index].date,
+                      DateFormat('dd MMM yyyy').format(DateTime.parse(
+                          articles[index + 1].publishedAt ??
+                              "Tanggal Tidak Ditemukan")),
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -228,8 +270,9 @@ class ExploreScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Image.asset(
-                'assets/images/${explore[index].image}',
+              child: Image.network(
+                articles[index + 1].urlToImage ??
+                    "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
                 width: 112,
                 height: 80,
                 fit: BoxFit.cover,
@@ -241,7 +284,7 @@ class ExploreScreen extends StatelessWidget {
       separatorBuilder: (context, index) => const SizedBox(
         height: 24,
       ),
-      itemCount: explore.length,
+      itemCount: articles!.length - 1,
     );
   }
 }

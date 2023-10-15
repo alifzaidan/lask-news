@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lask_news_app/models/news_model.dart';
+import 'package:intl/intl.dart';
+import 'package:lask_news_app/models/article_model.dart';
+// import 'package:lask_news_app/models/news_model.dart';
 
-class ArticleScreen extends StatefulWidget {
-  const ArticleScreen({Key? key});
+class ArticleScreen extends StatelessWidget {
+  ArticleScreen({super.key});
 
-  @override
-  State<ArticleScreen> createState() => _ArticleScreenState();
-}
-
-class _ArticleScreenState extends State<ArticleScreen> {
   Color _colorsClap = Colors.black;
+
   int _total = 0;
 
   @override
   Widget build(BuildContext context) {
-    final news = ModalRoute.of(context)!.settings.arguments as NewsModel;
+    final article = ModalRoute.of(context)!.settings.arguments as Article;
 
     return Scaffold(
       body: NestedScrollView(
@@ -27,21 +25,26 @@ class _ArticleScreenState extends State<ArticleScreen> {
               pinned: true,
               expandedHeight: 200.0,
               flexibleSpace: FlexibleSpaceBar(
-                background: Image.asset(
-                  'assets/images/${news.image}',
+                background: Image.network(
+                  article.urlToImage ??
+                      "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ];
         },
-        body: _content(news),
+        body: _content(article),
       ),
       bottomNavigationBar: _bottomAppBar(context),
     );
   }
 
-  Widget _content(NewsModel news) {
+  Widget _content(Article article) {
+    String? date = article.publishedAt;
+    DateFormat dateFormat = DateFormat('dd MMM yyyy');
+    String formattedDate = dateFormat.format(DateTime.parse(date!));
+
     return SingleChildScrollView(
       child: Stack(
         children: [
@@ -56,7 +59,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
             child: Column(
               children: [
                 Text(
-                  news.title,
+                  article.title ?? "Judul Tidak Ada",
                   style: GoogleFonts.inter(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
@@ -67,21 +70,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Image.asset(
-                        'assets/images/photo.jpg',
-                        height: 24,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
                     Text(
-                      news.author,
+                      article.author ?? "Author Tidak Ada",
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -92,7 +82,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                       child: Center(child: Text('-')),
                     ),
                     Text(
-                      news.date,
+                      formattedDate,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -103,19 +93,12 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                RichText(
-                  text: TextSpan(
-                    text: news.description1,
-                    style: GoogleFonts.merriweather(
-                      color: Colors.black,
-                      fontSize: 16,
-                      height: 1.6,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: news.description2,
-                      ),
-                    ],
+                Text(
+                  article.content ?? "Deskripsi Tidak Ada",
+                  style: GoogleFonts.merriweather(
+                    color: Colors.black,
+                    fontSize: 16,
+                    height: 1.6,
                   ),
                 ),
               ],

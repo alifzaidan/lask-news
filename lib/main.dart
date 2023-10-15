@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const Dashboard(),
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),
-        '/article': (context) => const ArticleScreen(),
+        '/article': (context) => ArticleScreen(),
       },
       // home: const SplashScreen(),
     );

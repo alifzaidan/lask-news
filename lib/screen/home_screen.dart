@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lask_news_app/models/news_model.dart';
+import 'package:lask_news_app/models/article_model.dart';
+import 'package:lask_news_app/services/api_services.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  ApiHeadline headline = ApiHeadline();
+  ApiJustForYou justforyou = ApiJustForYou();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +30,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              _listnews(headline),
+              _listnews(),
               const SizedBox(
                 height: 16,
               ),
@@ -73,65 +82,83 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  SizedBox _listnews(List<NewsModel> news) {
-    return SizedBox(
-      height: 400,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, '/article', arguments: news[index]);
-          },
-          highlightColor: Colors.grey[200],
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
+  Widget _listnews() {
+    return FutureBuilder(
+      future: headline.getArticle(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Article>? articles = snapshot.data;
+          return SizedBox(
+            height: 400,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/article',
+                      arguments: articles[index]);
+                },
+                highlightColor: Colors.grey[200],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Image.network(
+                        articles[index].urlToImage ??
+                            "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                        width: 269,
+                        height: 269,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SizedBox(
+                      width: 269,
+                      child: Text(
+                        articles[index].title ?? "Judul Tidak Ada",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: GoogleFonts.inter(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "Technology",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        color: const Color(0xFF6D6265),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Image.asset(
-                  'assets/images/${news[index].image}',
-                  width: 269,
-                  height: 269,
-                  fit: BoxFit.cover,
-                ),
               ),
-              const SizedBox(
-                height: 16,
+              separatorBuilder: (context, index) => const SizedBox(
+                width: 24,
               ),
-              SizedBox(
-                width: 269,
-                child: Text(
-                  news[index].title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: GoogleFonts.inter(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                news[index].category,
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: const Color(0xFF6D6265),
-                ),
-              ),
-            ],
-          ),
-        ),
-        separatorBuilder: (context, index) => const SizedBox(
-          width: 24,
-        ),
-        itemCount: news.length,
-      ),
+              itemCount: articles!.length,
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text("Error: ${snapshot.error}"),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 
@@ -163,7 +190,83 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        _listnews(justforyou),
+        FutureBuilder(
+          future: justforyou.getArticle(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Article>? articles = snapshot.data;
+              return SizedBox(
+                height: 400,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/article',
+                          arguments: articles[index]);
+                    },
+                    highlightColor: Colors.grey[200],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Image.network(
+                            articles[index].urlToImage ??
+                                "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                            width: 269,
+                            height: 269,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        SizedBox(
+                          width: 269,
+                          child: Text(
+                            articles[index].title ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: GoogleFonts.inter(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Technology",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: const Color(0xFF6D6265),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 24,
+                  ),
+                  itemCount: articles!.length,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text("Error: ${snapshot.error}"),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ],
     );
   }
