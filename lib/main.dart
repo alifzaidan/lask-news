@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lask_news_app/screen/bookmark_screen.dart';
 import 'package:lask_news_app/screen/dashboard.dart';
 import 'package:lask_news_app/screen/home_screen.dart';
 import 'package:lask_news_app/screen/article_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const Dashboard(),
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),
+        '/bookmark': (context) => const BookmarkScreen(),
         '/article': (context) => ArticleScreen(),
       },
       // home: const SplashScreen(),

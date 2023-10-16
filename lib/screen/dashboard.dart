@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:lask_news_app/screen/bookmark_screen.dart';
 import 'package:lask_news_app/screen/home_screen.dart';
 import 'package:lask_news_app/screen/explore_screen.dart';
+import 'package:lask_news_app/screen/profile_screen.dart';
 
 final screen = [
   const HomeScreen(),
   const ExploreScreen(),
-  const ExploreScreen(),
-  const ExploreScreen(),
+  const BookmarkScreen(),
+  const ProfileScreen(),
 ];
 
 class Dashboard extends StatefulWidget {
@@ -61,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
             text: 'Bookmark',
           ),
           GButton(
-            icon: FontAwesomeIcons.user,
+            icon: FontAwesomeIcons.solidUser,
             gap: 5,
             text: 'User',
           ),

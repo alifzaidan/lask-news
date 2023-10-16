@@ -37,7 +37,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
               _category(),
               const SizedBox(
-                height: 16,
+                height: 24,
               ),
               _news(),
             ],
@@ -49,20 +49,31 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   AppBar _appBar() {
     return AppBar(
-      title: Text(
-        "Explore",
-        style: GoogleFonts.inter(
-          fontSize: 32,
-          color: const Color(0xFF231F20),
-          fontWeight: FontWeight.w600,
-          height: 150 / 100,
+      title: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Text(
+          "Explore",
+          style: GoogleFonts.inter(
+            fontSize: 32,
+            color: const Color(0xFF231F20),
+            fontWeight: FontWeight.w600,
+            height: 150 / 100,
+          ),
         ),
       ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(10),
+        child: Container(),
+      ),
       backgroundColor: const Color(0xFFE9EEFA),
+      automaticallyImplyLeading: false,
       actions: <Widget>[
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
-          onPressed: () {},
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: IconButton(
+            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass, size: 20),
+            onPressed: () {},
+          ),
         ),
       ],
     );
@@ -226,18 +237,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 4),
                 Row(
                   children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Image.asset('assets/images/photo.jpg', height: 24),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
                     SizedBox(
                       child: Text(
                         articles[index + 1].author?.substring(0, 10) ??
