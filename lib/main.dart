@@ -4,6 +4,7 @@ import 'package:lask_news_app/screen/dashboard.dart';
 import 'package:lask_news_app/screen/home_screen.dart';
 import 'package:lask_news_app/screen/article_screen.dart';
 import 'package:lask_news_app/screen/explore_screen.dart';
+import 'package:lask_news_app/screen/login_screen.dart';
 import 'package:lask_news_app/screen/splash_screen.dart';
 import 'package:lask_news_app/screen/welcome_dart.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
+        '/login': (context) => const LoginScreen(),
         '/dashboard': (context) => const Dashboard(),
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),

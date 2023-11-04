@@ -2,8 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment(0.00, -1.00),
-            end: Alignment(0, 1),
+            end: Alignment(0, 0.2),
             colors: [Color(0xFF2148D4), Color(0xFFE9EEFA)],
           ),
         ),
@@ -20,6 +35,7 @@ class WelcomeScreen extends StatelessWidget {
           children: [
             Image.asset('assets/images/building.png'),
             Container(
+              width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -28,15 +44,12 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.all(32),
-              margin: const EdgeInsets.only(top: 480),
-              child: Column(
+              margin: const EdgeInsets.only(top: 180),
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 26,
-                  ),
                   Text(
-                    'Get The Latest News And Updates',
-                    textAlign: TextAlign.center,
+                    'Sign In',
                     style: GoogleFonts.inter(
                       fontSize: 32,
                       fontWeight: FontWeight.w600,
@@ -47,21 +60,45 @@ class WelcomeScreen extends StatelessWidget {
                     height: 16,
                   ),
                   Text(
-                    'From Politics to Entertainment: Your One-Stop Source for Comprehensive Coverage of the Latest News and Developments Across the Glob will be right on your hand.',
-                    textAlign: TextAlign.center,
+                    'Please fill username an password correctly',
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: const Color(0xFF6D6265),
                     ),
                   ),
                   const SizedBox(
+                    height: 42,
+                  ),
+                  Text(
+                    'Username',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                    ),
+                  ),
+                  TextField(
+                    controller: _usernameController,
+                  ),
+                  const SizedBox(
                     height: 24,
                   ),
+                  Text(
+                    'Password',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                    ),
+                  ),
+                  TextField(
+                    controller: _passwordController,
+                  ),
+                  const SizedBox(
+                    height: 42,
+                  ),
                   SizedBox(
-                    width: 150,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        String username = _usernameController.text;
+                        Navigator.pushNamed(context, '/dashboard',
+                            arguments: username);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff2F54D7),
@@ -74,7 +111,7 @@ class WelcomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Explore',
+                            'Login',
                             style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 20,
@@ -82,10 +119,10 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            width: 8,
+                            width: 14,
                           ),
                           const FaIcon(
-                            FontAwesomeIcons.arrowRight,
+                            FontAwesomeIcons.doorOpen,
                             color: Colors.white,
                             size: 16,
                           ),

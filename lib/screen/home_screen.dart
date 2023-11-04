@@ -20,13 +20,16 @@ class _HomeScreenState extends State<HomeScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Color(0xFFE9EEFA)));
+    String? username = ModalRoute.of(context)?.settings.arguments as String?;
+
+    username ??= 'Guest';
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _greetings(),
+              _greetings(username),
               const SizedBox(
                 height: 24,
               ),
@@ -42,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Container _greetings() {
+  Container _greetings(String username) {
     return Container(
       color: const Color(0xFFE9EEFA),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
@@ -51,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           RichText(
             text: TextSpan(
-              text: "Good Morning,\nAlif",
+              text: "Good Morning,\n$username",
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: const Color(0xFF6D6265),
