@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lask_news_app/models/profile_model.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,8 @@ class ProfileScreen extends StatelessWidget {
                 height: 24,
               ),
               _pages('Reading History', profiles),
-              _pages('Settings', settings)
+              _pages('Settings', settings),
+              _logout(context),
             ],
           ),
         ),
@@ -159,8 +163,9 @@ class ProfileScreen extends StatelessWidget {
             height: 8,
           ),
           SizedBox(
-            height: 50 * (page.length).toDouble(),
+            height: 48 * (page.length).toDouble(),
             child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
@@ -189,6 +194,46 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Container _logout(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 32),
+      child: ElevatedButton(
+        onPressed: () {
+          _auth.signOut();
+          Navigator.pushNamed(context, '/login');
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 16,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Logout',
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(
+              width: 14,
+            ),
+            const FaIcon(
+              FontAwesomeIcons.doorOpen,
+              color: Colors.white,
+              size: 16,
+            ),
+          ],
+        ),
       ),
     );
   }

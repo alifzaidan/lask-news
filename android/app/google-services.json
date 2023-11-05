@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1013053364799",
+    "project_id": "lask-news-354f0",
+    "storage_bucket": "lask-news-354f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013053364799:android:a325f0c0dfedfe9aebb68a",
+        "android_client_info": {
+          "package_name": "com.example.lask_news_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKP5hEDyxogpdzyjxhPKpWaHoHY60Bieo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

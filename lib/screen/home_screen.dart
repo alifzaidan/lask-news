@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/article_model.dart';
 import 'package:lask_news_app/services/api_services.dart';
 
@@ -20,16 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Color(0xFFE9EEFA)));
-    String? username = ModalRoute.of(context)?.settings.arguments as String?;
-
-    username ??= 'Guest';
 
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _greetings(username),
+              _greetings(),
               const SizedBox(
                 height: 24,
               ),
@@ -45,7 +43,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Container _greetings(String username) {
+  Container _greetings() {
+    String getGreeting(int hour) {
+      if (hour < 12) {
+        return 'Good Morning';
+      } else if (hour < 17) {
+        return 'Good Afternoon';
+      } else {
+        return 'Good Evening';
+      }
+    }
+
     return Container(
       color: const Color(0xFFE9EEFA),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
@@ -54,16 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           RichText(
             text: TextSpan(
-              text: "Good Morning,\n$username",
+              text: "${getGreeting(TimeOfDay.now().hour)},\nFolks!!",
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: const Color(0xFF6D6265),
                 height: 150 / 100,
               ),
-              children: const [
+              children: [
                 TextSpan(
-                  text: "\nSun 9 April, 2023",
-                  style: TextStyle(
+                  text:
+                      "\n${DateFormat('EEEE').format(DateTime.now()).substring(0, 3)} ${DateFormat('d MMMM, yyyy').format(DateTime.now())}",
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF231F20),

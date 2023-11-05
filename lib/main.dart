@@ -1,14 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:lask_news_app/screen/bookmark_screen.dart';
-import 'package:lask_news_app/screen/dashboard.dart';
+import 'package:lask_news_app/screen/navigation.dart';
 import 'package:lask_news_app/screen/home_screen.dart';
 import 'package:lask_news_app/screen/article_screen.dart';
 import 'package:lask_news_app/screen/explore_screen.dart';
 import 'package:lask_news_app/screen/login_screen.dart';
+import 'package:lask_news_app/screen/register_screen.dart';
 import 'package:lask_news_app/screen/splash_screen.dart';
 import 'package:lask_news_app/screen/welcome_dart.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -29,13 +37,13 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/welcome': (context) => const WelcomeScreen(),
         '/login': (context) => const LoginScreen(),
-        '/dashboard': (context) => const Dashboard(),
+        '/register': (context) => const RegisterScreen(),
+        '/dashboard': (context) => const Navigation(),
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),
         '/bookmark': (context) => const BookmarkScreen(),
         '/article': (context) => ArticleScreen(),
       },
-      // home: const SplashScreen(),
     );
   }
 }

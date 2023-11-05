@@ -4,14 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lask_news_app/services/firebase_auth_service.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuthService _authService = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -23,10 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    User? user = await _authService.signInWithEmailAndPassword(
+    User? user = await _authService.signUpWithEmailAndPassword(
       email: email,
       password: password,
       context: context,
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Login successfully'),
+          content: Text('User is successfully created'),
           backgroundColor: Colors.green,
         ),
       );
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Login failed'),
+          content: Text('Cannot create user'),
           backgroundColor: Colors.red,
         ),
       );
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: ListView(
                 children: [
                   Text(
-                    'Sign In',
+                    'Sign Up',
                     style: GoogleFonts.inter(
                       fontSize: 32,
                       fontWeight: FontWeight.w600,
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 16,
                   ),
                   Text(
-                    'Please fill email an password correctly',
+                    'Please fill your information below',
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: const Color(0xFF6D6265),
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     child: ElevatedButton(
                       onPressed: () {
-                        _login();
+                        _register();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff2F54D7),
@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Login',
+                            'Register',
                             style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 20,
@@ -163,17 +163,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an account? ',
+                        'Already have an account? ',
                         style: GoogleFonts.inter(
                           fontSize: 16,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.pushNamed(context, '/login');
                         },
                         child: Text(
-                          'Register',
+                          'Login',
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

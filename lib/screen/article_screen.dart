@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/article_model.dart';
-// import 'package:lask_news_app/models/news_model.dart';
 
 class ArticleScreen extends StatelessWidget {
   ArticleScreen({super.key});

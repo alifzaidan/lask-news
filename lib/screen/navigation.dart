@@ -11,17 +11,17 @@ final screen = [
   const HomeScreen(),
   const ExploreScreen(),
   const BookmarkScreen(),
-  const ProfileScreen(),
+  ProfileScreen(),
 ];
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+class Navigation extends StatefulWidget {
+  const Navigation({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<Navigation> createState() => _NavigationState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _NavigationState extends State<Navigation> {
   int _currentIndex = 0;
 
   @override
