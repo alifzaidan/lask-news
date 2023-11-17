@@ -142,6 +142,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Text(articles?[0].toString() ?? "Data Tidak Ditemukan"),
             Container(
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(

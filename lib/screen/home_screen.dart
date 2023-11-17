@@ -189,12 +189,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Text(
-                'See more',
-                style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2D5BD0)),
+              TextButton(
+                child: Text(
+                  'See more',
+                  style: GoogleFonts.inter(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF2D5BD0)),
+                ),
+                onPressed: () => Navigator.pushNamed(context, '/justforyou'),
               ),
             ],
           ),

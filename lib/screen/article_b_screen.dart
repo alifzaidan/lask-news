@@ -3,22 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:lask_news_app/models/article_model.dart';
 import 'package:lask_news_app/models/bookmark_model.dart';
 import 'package:lask_news_app/services/bookmark_services.dart';
 
-class ArticleScreen extends StatelessWidget {
-  ArticleScreen({super.key});
+class ArticleBScreen extends StatelessWidget {
+  ArticleBScreen({super.key});
 
   Color _colorsClap = Colors.black;
 
   int _total = 0;
-  int _jumlah = 0;
-  bool _isBookmark = false;
 
   @override
   Widget build(BuildContext context) {
-    final article = ModalRoute.of(context)!.settings.arguments as Article;
+    final article = ModalRoute.of(context)!.settings.arguments as BookmarkModel;
 
     return Scaffold(
       body: NestedScrollView(
@@ -44,7 +41,7 @@ class ArticleScreen extends StatelessWidget {
     );
   }
 
-  Widget _content(Article article) {
+  Widget _content(BookmarkModel article) {
     String? date = article.publishedAt;
     DateFormat dateFormat = DateFormat('dd MMM yyyy');
     String formattedDate = dateFormat.format(DateTime.parse(date!));
@@ -113,7 +110,7 @@ class ArticleScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomAppBar(Article article, BuildContext context) {
+  Widget _bottomAppBar(BookmarkModel article, BuildContext context) {
     return BottomAppBar(
       color: Colors.white,
       child: Container(
@@ -160,27 +157,15 @@ class ArticleScreen extends StatelessWidget {
             StreamBuilder<QuerySnapshot>(
               stream: DbBookmark.getData(),
               builder: (context, snapshot) {
-                _jumlah = snapshot.data!.docs.length;
                 return IconButton(
-                  icon: FaIcon(
-                    _isBookmark
-                        ? FontAwesomeIcons.solidBookmark
-                        : FontAwesomeIcons.bookmark,
+                  icon: const FaIcon(
+                    FontAwesomeIcons.bookmark,
                     size: 20,
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    _jumlah++;
-                    final barangbaru = BookmarkModel(
-                      id: _jumlah.toString(),
-                      title: article.title ?? "Judul Tidak Ada",
-                      author: article.author ?? "Author Tidak Ada",
-                      urlToImage: article.urlToImage ??
-                          "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
-                      publishedAt: article.publishedAt ?? "No Date",
-                      content: article.content ?? "Deskripsi Tidak Ada",
-                    );
-                    DbBookmark.addData(itembookmark: barangbaru);
+                    DbBookmark.deleteData(id: article.id);
+                    Navigator.of(context).pop();
                   },
                 );
               },

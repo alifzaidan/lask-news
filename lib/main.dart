@@ -1,4 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:lask_news_app/screen/article_b_screen.dart';
+import 'package:lask_news_app/screen/justforyou_screen.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:lask_news_app/screen/bookmark_screen.dart';
@@ -43,6 +45,8 @@ class MyApp extends StatelessWidget {
         '/explore': (context) => const ExploreScreen(),
         '/bookmark': (context) => const BookmarkScreen(),
         '/article': (context) => ArticleScreen(),
+        '/articleb': (context) => ArticleBScreen(),
+        '/justforyou': (context) => const JustForYouScreen(),
       },
     );
   }
