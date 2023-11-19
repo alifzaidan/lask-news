@@ -7,15 +7,13 @@ import 'package:lask_news_app/models/bookmark_model.dart';
 import 'package:lask_news_app/services/bookmark_services.dart';
 
 class ArticleBScreen extends StatelessWidget {
-  ArticleBScreen({super.key});
-
-  Color _colorsClap = Colors.black;
-
-  int _total = 0;
+  const ArticleBScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final article = ModalRoute.of(context)!.settings.arguments as BookmarkModel;
+    final snapshotarticle =
+        ModalRoute.of(context)!.settings.arguments as DocumentSnapshot;
+    final article = BookmarkModel.fromSnapshot(snapshotarticle);
 
     return Scaffold(
       body: NestedScrollView(
@@ -27,8 +25,7 @@ class ArticleBScreen extends StatelessWidget {
               expandedHeight: 200.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.network(
-                  article.urlToImage ??
-                      "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                  article.urlToImage,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -37,14 +34,14 @@ class ArticleBScreen extends StatelessWidget {
         },
         body: _content(article),
       ),
-      bottomNavigationBar: _bottomAppBar(article, context),
+      bottomNavigationBar: _bottomAppBar(snapshotarticle, context),
     );
   }
 
   Widget _content(BookmarkModel article) {
-    String? date = article.publishedAt;
+    String date = article.publishedAt;
     DateFormat dateFormat = DateFormat('dd MMM yyyy');
-    String formattedDate = dateFormat.format(DateTime.parse(date!));
+    String formattedDate = dateFormat.format(DateTime.parse(date));
 
     return SingleChildScrollView(
       child: Stack(
@@ -60,7 +57,7 @@ class ArticleBScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  article.title ?? "Judul Tidak Ada",
+                  article.title,
                   style: GoogleFonts.inter(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
@@ -72,7 +69,7 @@ class ArticleBScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      article.author ?? "Author Tidak Ada",
+                      article.author,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -95,7 +92,7 @@ class ArticleBScreen extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
-                  article.content ?? "Deskripsi Tidak Ada",
+                  article.content,
                   style: GoogleFonts.merriweather(
                     color: Colors.black,
                     fontSize: 16,
@@ -110,7 +107,7 @@ class ArticleBScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomAppBar(BookmarkModel article, BuildContext context) {
+  Widget _bottomAppBar(DocumentSnapshot article, BuildContext context) {
     return BottomAppBar(
       color: Colors.white,
       child: Container(
@@ -128,43 +125,18 @@ class ArticleBScreen extends StatelessWidget {
               },
             ),
             const Spacer(),
-            StatefulBuilder(
-              builder: (context, setState) {
-                return IconButton(
-                  icon: FaIcon(
-                    FontAwesomeIcons.handsClapping,
-                    size: 20,
-                    color: _colorsClap,
-                  ),
-                  onPressed: () {
-                    setState(
-                      () {
-                        if (_colorsClap == Colors.black) {
-                          _colorsClap = const Color(0xFF2D5BD0);
-                          _total++;
-                        } else {
-                          _colorsClap = Colors.black;
-                          _total--;
-                        }
-                      },
-                    );
-                  },
-                );
-              },
-            ),
-            Text(_total.toString()),
             const SizedBox(width: 8),
             StreamBuilder<QuerySnapshot>(
               stream: DbBookmark.getData(),
               builder: (context, snapshot) {
                 return IconButton(
                   icon: const FaIcon(
-                    FontAwesomeIcons.bookmark,
+                    FontAwesomeIcons.solidBookmark,
                     size: 20,
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    DbBookmark.deleteData(id: article.id);
+                    DbBookmark.deleteData(article);
                     Navigator.of(context).pop();
                   },
                 );

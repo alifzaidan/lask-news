@@ -26,9 +26,6 @@ class _JustForYouScreenState extends State<JustForYouScreen> {
               const SizedBox(
                 height: 16,
               ),
-              const SizedBox(
-                height: 24,
-              ),
               _news(justforyou),
             ],
           ),
@@ -42,9 +39,9 @@ class _JustForYouScreenState extends State<JustForYouScreen> {
       title: Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: Text(
-          "JustForYou",
+          "Just For You",
           style: GoogleFonts.inter(
-            fontSize: 32,
+            fontSize: 26,
             color: const Color(0xFF231F20),
             fontWeight: FontWeight.w600,
             height: 150 / 100,
@@ -56,7 +53,6 @@ class _JustForYouScreenState extends State<JustForYouScreen> {
         child: Container(),
       ),
       backgroundColor: const Color(0xFFE9EEFA),
-      automaticallyImplyLeading: false,
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 16.0),

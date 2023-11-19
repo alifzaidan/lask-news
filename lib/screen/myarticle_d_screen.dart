@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:lask_news_app/models/article_model.dart';
-import 'package:lask_news_app/models/bookmark_model.dart';
+import 'package:lask_news_app/models/myarticles_model.dart';
 import 'package:lask_news_app/services/bookmark_services.dart';
 
-// ignore: must_be_immutable
-class ArticleScreen extends StatelessWidget {
-  const ArticleScreen({super.key});
+class MyArticleDetailScreen extends StatelessWidget {
+  const MyArticleDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final article = ModalRoute.of(context)!.settings.arguments as Article;
+    final article =
+        ModalRoute.of(context)!.settings.arguments as MyArticlesModel;
 
     return Scaffold(
       body: NestedScrollView(
@@ -25,8 +24,7 @@ class ArticleScreen extends StatelessWidget {
               expandedHeight: 200.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.network(
-                  article.urlToImage ??
-                      "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                  article.urlToImage,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -39,10 +37,10 @@ class ArticleScreen extends StatelessWidget {
     );
   }
 
-  Widget _content(Article article) {
-    String? date = article.publishedAt;
+  Widget _content(MyArticlesModel article) {
+    String date = article.publishedAt;
     DateFormat dateFormat = DateFormat('dd MMM yyyy');
-    String formattedDate = dateFormat.format(DateTime.parse(date!));
+    String formattedDate = dateFormat.format(DateTime.parse(date));
 
     return SingleChildScrollView(
       child: Stack(
@@ -58,7 +56,7 @@ class ArticleScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  article.title ?? "Judul Tidak Ada",
+                  article.title,
                   style: GoogleFonts.inter(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
@@ -70,7 +68,7 @@ class ArticleScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      article.author ?? "Author Tidak Ada",
+                      article.author,
                       style: GoogleFonts.inter(
                         fontSize: 12,
                         color: const Color(0xFF6D6265),
@@ -93,7 +91,7 @@ class ArticleScreen extends StatelessWidget {
                   height: 16,
                 ),
                 Text(
-                  article.content ?? "Deskripsi Tidak Ada",
+                  article.content,
                   style: GoogleFonts.merriweather(
                     color: Colors.black,
                     fontSize: 16,
@@ -108,7 +106,7 @@ class ArticleScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomAppBar(Article article, BuildContext context) {
+  Widget _bottomAppBar(MyArticlesModel article, BuildContext context) {
     return BottomAppBar(
       color: Colors.white,
       child: Container(
@@ -132,23 +130,11 @@ class ArticleScreen extends StatelessWidget {
               builder: (context, snapshot) {
                 return IconButton(
                   icon: const FaIcon(
-                    FontAwesomeIcons.bookmark,
+                    FontAwesomeIcons.solidBookmark,
                     size: 20,
                     color: Colors.black,
                   ),
-                  onPressed: () {
-                    final barangbaru = BookmarkModel(
-                      title: article.title ?? "Judul Tidak Ada",
-                      author: article.author ?? "Author Tidak Ada",
-                      url: article.url ?? "URL Tidak Ada",
-                      urlToImage: article.urlToImage ??
-                          "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
-                      publishedAt: article.publishedAt ?? "No Date",
-                      content: article.content ?? "Deskripsi Tidak Ada",
-                    );
-                    DbBookmark.addData(itembookmark: barangbaru);
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () {},
                 );
               },
             ),

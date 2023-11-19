@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lask_news_app/screen/article_b_screen.dart';
 import 'package:lask_news_app/screen/justforyou_screen.dart';
+import 'package:lask_news_app/screen/myarticle_d_screen.dart';
+import 'package:lask_news_app/screen/myarticle_screen.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:lask_news_app/screen/bookmark_screen.dart';
@@ -30,7 +32,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Lask News App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF231F20)),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
@@ -44,9 +45,11 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),
         '/bookmark': (context) => const BookmarkScreen(),
-        '/article': (context) => ArticleScreen(),
-        '/articleb': (context) => ArticleBScreen(),
+        '/article': (context) => const ArticleScreen(),
+        '/articleb': (context) => const ArticleBScreen(),
         '/justforyou': (context) => const JustForYouScreen(),
+        '/myarticles': (context) => const MyArticleScreen(),
+        '/myarticle': (context) => const MyArticleDetailScreen(),
       },
     );
   }

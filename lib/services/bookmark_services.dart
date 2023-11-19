@@ -10,26 +10,10 @@ class DbBookmark {
   }
 
   static Future<void> addData({required BookmarkModel itembookmark}) async {
-    DocumentReference docRef = bookmark.doc(itembookmark.id);
-    await docRef
-        .set(itembookmark.toJson())
-        .whenComplete(() => print('Data berhasil ditambahkan'))
-        .catchError((e) => print(e));
+    await bookmark.add(itembookmark.toJson());
   }
 
-  static Future<void> updateData({required BookmarkModel itembookmark}) async {
-    DocumentReference docRef = bookmark.doc(itembookmark.id);
-    await docRef
-        .update(itembookmark.toJson())
-        .whenComplete(() => print('Data berhasil diubah'))
-        .catchError((e) => print(e));
-  }
-
-  static Future<void> deleteData({required String id}) async {
-    DocumentReference docRef = bookmark.doc(id);
-    await docRef
-        .delete()
-        .whenComplete(() => print('Data berhasil dihapus'))
-        .catchError((e) => print(e));
+  static Future<void> deleteData(DocumentSnapshot<Object?> article) async {
+    await bookmark.doc(article.id).delete();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class BookmarkModel {
+class MyArticlesModel {
   final String title;
   final String author;
   final String url;
@@ -8,7 +8,7 @@ class BookmarkModel {
   final String publishedAt;
   final String content;
 
-  BookmarkModel({
+  MyArticlesModel({
     required this.title,
     required this.author,
     required this.url,
@@ -28,8 +28,8 @@ class BookmarkModel {
     };
   }
 
-  factory BookmarkModel.fromJson(Map<String, dynamic> json) {
-    return BookmarkModel(
+  factory MyArticlesModel.fromJson(Map<String, dynamic> json) {
+    return MyArticlesModel(
       title: json['title'],
       author: json['author'],
       url: json['url'],
@@ -39,8 +39,8 @@ class BookmarkModel {
     );
   }
 
-  factory BookmarkModel.fromSnapshot(DocumentSnapshot snapshot) {
-    return BookmarkModel(
+  factory MyArticlesModel.fromSnapshot(DocumentSnapshot snapshot) {
+    return MyArticlesModel(
       title: snapshot.get('title'),
       author: snapshot.get('author'),
       url: snapshot.get('url'),

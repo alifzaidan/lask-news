@@ -14,8 +14,8 @@ var profiles = [
     route: "/claped",
   ),
   ProfileModel(
-    page: "Read Articles",
-    route: "/read",
+    page: "My Articles",
+    route: "/myarticles",
   ),
 ];
 
@@ -27,10 +27,6 @@ var settings = [
   ProfileModel(
     page: "Privacy Settings",
     route: "/privacy",
-  ),
-  ProfileModel(
-    page: "Offline Reading",
-    route: "/offreading",
   ),
   ProfileModel(
     page: "About Us",

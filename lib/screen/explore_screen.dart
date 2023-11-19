@@ -142,7 +142,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text(articles?[0].toString() ?? "Data Tidak Ditemukan"),
             Container(
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
@@ -242,18 +241,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 Row(
                   children: [
                     SizedBox(
+                      width: 100,
                       child: Text(
-                        articles[index + 1].author?.substring(0, 10) ??
-                            "Anonimous",
+                        articles[index + 1].author ?? "Author Tidak Ada",
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: const Color(0xFF6D6265),
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(
-                      width: 14,
-                      child: Center(child: Text('-')),
+                      width: 30,
                     ),
                     Text(
                       DateFormat('dd MMM yyyy').format(DateTime.parse(

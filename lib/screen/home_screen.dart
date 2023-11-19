@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 8,
                         ),
                         Text(
-                          "Technology",
+                          "Sports",
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: const Color(0xFF6D6265),

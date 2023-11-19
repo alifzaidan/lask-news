@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:lask_news_app/services/bookmark_services.dart';
+import 'package:lask_news_app/models/myarticles_model.dart';
+import 'package:lask_news_app/services/myarticles_services.dart';
 
-class BookmarkScreen extends StatefulWidget {
-  const BookmarkScreen({super.key});
+class MyArticleScreen extends StatefulWidget {
+  const MyArticleScreen({super.key});
 
   @override
-  State<BookmarkScreen> createState() => _BookmarkScreenState();
+  State<MyArticleScreen> createState() => _MyArticleScreenState();
 }
 
-class _BookmarkScreenState extends State<BookmarkScreen> {
+class _MyArticleScreenState extends State<MyArticleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +30,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => DbMyArticle.create(context),
+        backgroundColor: const Color(0xFFE9EEFA),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -37,9 +43,9 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       title: Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: Text(
-          "Bookmark",
+          "My Article",
           style: GoogleFonts.inter(
-            fontSize: 32,
+            fontSize: 26,
             color: const Color(0xFF231F20),
             fontWeight: FontWeight.w600,
             height: 150 / 100,
@@ -51,7 +57,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         child: Container(),
       ),
       backgroundColor: const Color(0xFFE9EEFA),
-      automaticallyImplyLeading: false,
       actions: <Widget>[
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
@@ -66,7 +71,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
   Widget _listnews() {
     return StreamBuilder<QuerySnapshot>(
-      stream: DbBookmark.getData(),
+      stream: DbMyArticle.getData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.separated(
@@ -78,9 +83,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
               return InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, '/articleb',
-                      arguments: articles);
+                  Navigator.pushNamed(context, '/myarticle',
+                      arguments: MyArticlesModel.fromSnapshot(articles));
                 },
+                onLongPress: () => DbMyArticle.update(articles, context),
+                onDoubleTap: () => DbMyArticle.delete(articles, context),
                 highlightColor: Colors.grey[200],
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
