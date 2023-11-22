@@ -16,4 +16,8 @@ class DbBookmark {
   static Future<void> deleteData(DocumentSnapshot<Object?> article) async {
     await bookmark.doc(article.id).delete();
   }
+
+  static Future<void> searchBookmark(String title) async {
+    await bookmark.where('title', isEqualTo: title).get();
+  }
 }

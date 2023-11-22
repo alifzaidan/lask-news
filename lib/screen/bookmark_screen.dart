@@ -57,7 +57,9 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           padding: const EdgeInsets.only(right: 16.0),
           child: IconButton(
             icon: const FaIcon(FontAwesomeIcons.magnifyingGlass, size: 20),
-            onPressed: () {},
+            onPressed: () {
+              showSearch(context: context, delegate: CustomSearch());
+            },
           ),
         ),
       ],
@@ -161,6 +163,147 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
             child: CircularProgressIndicator(),
           );
         }
+      },
+    );
+  }
+}
+
+class CustomSearch extends SearchDelegate {
+  List<String> allData = [
+    'Amreica',
+    'England',
+    'Rusia',
+    'China',
+    'Belgium',
+    'Spain'
+  ];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const FaIcon(FontAwesomeIcons.xmark, size: 20),
+        onPressed: () {
+          if (query.isEmpty) {
+            close(context, null);
+          } else {
+            query = "";
+          }
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const FaIcon(FontAwesomeIcons.arrowLeft, size: 20),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // Tentukan query
+    Query q = FirebaseFirestore.instance
+        .collection("bookmark")
+        .where("title", isEqualTo: query);
+
+    DbBookmark.searchBookmark(query);
+
+    Stream<QuerySnapshot> stream = q.snapshots();
+
+    // Tampilkan hasil query
+    return StreamBuilder<QuerySnapshot>(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: Text("Tidak ada data"),
+          );
+        }
+
+        List<DocumentSnapshot> documents = snapshot.data!.docs;
+        List<Widget> listItems = [];
+
+        for (var document in documents) {
+          // Tampilkan data produk
+          listItems.add(
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(document["title"]),
+                        Text('document["author"]'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return ListView(
+          children: listItems,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // Tentukan query
+    Query q = FirebaseFirestore.instance
+        .collection("bookmark")
+        .where("title", isEqualTo: query);
+
+    // Lakukan query ke database Firestore
+    Stream<QuerySnapshot> stream = q.snapshots();
+
+    // Tampilkan hasil query
+    return StreamBuilder<QuerySnapshot>(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: Text("Tidak ada data"),
+          );
+        }
+
+        List<DocumentSnapshot> documents = snapshot.data!.docs;
+        List<Widget> listItems = [];
+
+        for (var document in documents) {
+          // Tampilkan data produk
+          listItems.add(
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Image.network(document["urlToImage"]),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(document["title"]),
+                        Text(document["author"]),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return ListView(
+          children: listItems,
+        );
       },
     );
   }
