@@ -38,7 +38,7 @@ class _NavigationState extends State<Navigation> {
 
   Widget _bottomNavigationBar() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       color: Colors.transparent,
       child: GNav(
         selectedIndex: _currentIndex,

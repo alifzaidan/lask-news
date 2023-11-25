@@ -122,7 +122,7 @@ class _MyArticleScreenState extends State<MyArticleScreen> {
                               ),
                             ),
                             const SizedBox(
-                              width: 30,
+                              width: 8,
                             ),
                             Text(
                               DateFormat('dd MMM yyyy').format(DateTime.parse(

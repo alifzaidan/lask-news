@@ -43,4 +43,14 @@ class FirebaseAuthService {
     }
     return null;
   }
+
+  String? getCurrentUser() {
+    try {
+      User? user = _firebaseAuth.currentUser;
+      return user?.email;
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
 }

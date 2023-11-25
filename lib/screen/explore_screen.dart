@@ -252,7 +252,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ),
                     ),
                     const SizedBox(
-                      width: 30,
+                      width: 8,
                     ),
                     Text(
                       DateFormat('dd MMM yyyy').format(DateTime.parse(

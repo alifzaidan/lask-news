@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/article_model.dart';
+import 'package:lask_news_app/models/user_model.dart';
 import 'package:lask_news_app/services/api_services.dart';
+import 'package:lask_news_app/services/firebase_auth_service.dart';
+import 'package:lask_news_app/services/user_services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   ApiHeadline headline = ApiHeadline();
   ApiJustForYou justforyou = ApiJustForYou();
+  final FirebaseAuthService _authService = FirebaseAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -57,38 +61,49 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       color: const Color(0xFFE9EEFA),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-            text: TextSpan(
-              text: "${getGreeting(TimeOfDay.now().hour)},\nFolks!!",
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: const Color(0xFF6D6265),
-                height: 150 / 100,
-              ),
-              children: [
-                TextSpan(
-                  text:
-                      "\n${DateFormat('EEEE').format(DateTime.now()).substring(0, 3)} ${DateFormat('d MMMM, yyyy').format(DateTime.now())}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF231F20),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FutureBuilder(
+                  future: DbUser.getUserByEmail(_authService.getCurrentUser()!),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        "${getGreeting(TimeOfDay.now().hour)}, ${snapshot.data![0]['name']}",
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: const Color(0xFF6D6265),
+                          height: 150 / 100,
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                          'Error retrieving user data: ${snapshot.error}');
+                    } else {
+                      return const Text("Loading...");
+                    }
+                  }),
+              const Text(
+                "☀️ Sunny 32\u2103",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF6D6265),
                 ),
-              ],
+              )
+            ],
+          ),
+          Text(
+            "${DateFormat('EEEE').format(DateTime.now()).substring(0, 3)} ${DateFormat('d MMMM, yyyy').format(DateTime.now())}",
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF231F20),
             ),
           ),
-          const Text(
-            "☀️ Sunny 32\u2103",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF6D6265),
-            ),
-          )
         ],
       ),
     );
@@ -197,7 +212,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.w600,
                       color: const Color(0xFF2D5BD0)),
                 ),
-                onPressed: () => Navigator.pushNamed(context, '/justforyou'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/justforyou');
+                },
               ),
             ],
           ),

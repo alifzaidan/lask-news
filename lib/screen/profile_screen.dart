@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lask_news_app/models/profile_model.dart';
+import 'package:lask_news_app/services/firebase_auth_service.dart';
+import 'package:lask_news_app/services/user_services.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuthService _authService = FirebaseAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +24,6 @@ class ProfileScreen extends StatelessWidget {
                 height: 24,
               ),
               _heading(),
-              const SizedBox(
-                height: 24,
-              ),
-              _stats(),
               const SizedBox(
                 height: 24,
               ),
@@ -47,102 +47,105 @@ class ProfileScreen extends StatelessWidget {
   Container _heading() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/photo.jpg'),
-                radius: 55,
-              ),
-              const SizedBox(
-                width: 24,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Alif Zaidan',
-                    style: GoogleFonts.inter(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    'Bookworm',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: const Color(0xFF2D5BD0),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
+      child: FutureBuilder(
+          future: DbUser.getUserByEmail(_authService.getCurrentUser()!),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              DocumentSnapshot user = snapshot.data![0];
 
-  Container _stats() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Article Read',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: const Color(0xFF6D6265),
-                ),
-              ),
-              Text(
-                '320',
-                style: GoogleFonts.inter(
-                    fontSize: 24, fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Streak',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: const Color(0xFF6D6265),
-                ),
-              ),
-              Text(
-                '345 Days',
-                style: GoogleFonts.inter(
-                    fontSize: 24, fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Level',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: const Color(0xFF6D6265),
-                ),
-              ),
-              Text(
-                '125',
-                style: GoogleFonts.inter(
-                    fontSize: 24, fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-        ],
-      ),
+              String badge = "";
+              int level = 0;
+              if (user['articlesRead'] < 10) {
+                level = 1;
+                badge = "Bookworm";
+              } else if (user['articlesRead'] < 20) {
+                level = 2;
+                badge = "Critical Thinker";
+              } else if (user['articlesRead'] < 30) {
+                level = 3;
+                badge = "Knowledgeable";
+              }
+
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/photo.jpg'),
+                        radius: 50,
+                      ),
+                      const SizedBox(
+                        width: 24,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user['name'],
+                            style: GoogleFonts.inter(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            badge,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: const Color(0xFF2D5BD0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            'Article Read',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: const Color(0xFF6D6265),
+                            ),
+                          ),
+                          Text(
+                            user['articlesRead'].toString(),
+                            style: GoogleFonts.inter(
+                                fontSize: 24, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            'Level',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: const Color(0xFF6D6265),
+                            ),
+                          ),
+                          Text(
+                            level.toString(),
+                            style: GoogleFonts.inter(
+                                fontSize: 24, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error retrieving user data: ${snapshot.error}');
+            } else {
+              return const Text("Loading...");
+            }
+          }),
     );
   }
 

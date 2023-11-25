@@ -117,7 +117,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                               ),
                             ),
                             const SizedBox(
-                              width: 30,
+                              width: 8,
                             ),
                             Text(
                               DateFormat('dd MMM yyyy').format(DateTime.parse(

@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lask_news_app/models/user_model.dart';
 import 'package:lask_news_app/services/firebase_auth_service.dart';
+import 'package:lask_news_app/services/user_services.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,6 +16,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuthService _authService = FirebaseAuthService();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -110,6 +113,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 24,
                   ),
                   Text(
+                    'Name',
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                    ),
+                  ),
+                  TextField(
+                    controller: _nameController,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Text(
                     'Password',
                     style: GoogleFonts.inter(
                       fontSize: 16,
@@ -125,6 +140,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         _register();
+                        final userbaru = UserModel(
+                          name: _nameController.text,
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          articlesRead: 0,
+                        );
+                        DbUser.addData(itemuser: userbaru);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff2F54D7),

@@ -28,7 +28,8 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               padding: const EdgeInsets.all(32),
-              margin: const EdgeInsets.only(top: 480),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.5),
               child: Column(
                 children: [
                   const SizedBox(
