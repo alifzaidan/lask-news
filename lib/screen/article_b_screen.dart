@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/bookmark_model.dart';
 import 'package:lask_news_app/services/bookmark_services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ArticleBScreen extends StatelessWidget {
   const ArticleBScreen({super.key});
@@ -34,7 +35,7 @@ class ArticleBScreen extends StatelessWidget {
         },
         body: _content(article),
       ),
-      bottomNavigationBar: _bottomAppBar(snapshotarticle, context),
+      bottomNavigationBar: _bottomAppBar(snapshotarticle, context, article),
     );
   }
 
@@ -107,7 +108,8 @@ class ArticleBScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomAppBar(DocumentSnapshot article, BuildContext context) {
+  Widget _bottomAppBar(DocumentSnapshot snapshotarticle, BuildContext context,
+      BookmarkModel article) {
     return BottomAppBar(
       color: Colors.white,
       child: Container(
@@ -136,7 +138,7 @@ class ArticleBScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    DbBookmark.deleteData(article);
+                    DbBookmark.deleteData(snapshotarticle);
                     Navigator.of(context).pop();
                   },
                 );
@@ -149,7 +151,12 @@ class ArticleBScreen extends StatelessWidget {
                 size: 20,
                 color: Colors.black,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await Share.share(
+                  article.url,
+                  subject: article.title,
+                );
+              },
             ),
           ],
         ),

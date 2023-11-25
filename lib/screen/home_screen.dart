@@ -120,56 +120,70 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/article',
-                      arguments: articles[index]);
-                },
-                highlightColor: Colors.grey[200],
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+              itemBuilder: (context, index) => FutureBuilder(
+                  future: DbUser.getUserByEmail(_authService.getCurrentUser()!),
+                  builder: (context, usersnapshot) {
+                    return InkWell(
+                      onTap: () {
+                        final userbaru = UserModel(
+                          name: usersnapshot.data![0]['name'],
+                          email: usersnapshot.data![0]['email'],
+                          password: usersnapshot.data![0]['password'],
+                          articlesRead:
+                              usersnapshot.data![0]['articlesRead'] + 1,
+                        );
+                        DbUser.updateData(
+                            snapshot: usersnapshot.data![0],
+                            itemuser: userbaru);
+                        Navigator.pushNamed(context, '/article',
+                            arguments: articles[index]);
+                      },
+                      highlightColor: Colors.grey[200],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Image.network(
+                              articles[index].urlToImage ??
+                                  "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                              width: 269,
+                              height: 269,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          SizedBox(
+                            width: 269,
+                            child: Text(
+                              articles[index].title ?? "Judul Tidak Ada",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: GoogleFonts.inter(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "Technology",
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: const Color(0xFF6D6265),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Image.network(
-                        articles[index].urlToImage ??
-                            "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
-                        width: 269,
-                        height: 269,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    SizedBox(
-                      width: 269,
-                      child: Text(
-                        articles[index].title ?? "Judul Tidak Ada",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: GoogleFonts.inter(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "Technology",
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: const Color(0xFF6D6265),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                    );
+                  }),
               separatorBuilder: (context, index) => const SizedBox(
                 width: 24,
               ),
@@ -232,56 +246,71 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/article',
-                          arguments: articles[index]);
-                    },
-                    highlightColor: Colors.grey[200],
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
+                  itemBuilder: (context, index) => FutureBuilder(
+                      future:
+                          DbUser.getUserByEmail(_authService.getCurrentUser()!),
+                      builder: (context, usersnapshot) {
+                        return InkWell(
+                          onTap: () {
+                            final userbaru = UserModel(
+                              name: usersnapshot.data![0]['name'],
+                              email: usersnapshot.data![0]['email'],
+                              password: usersnapshot.data![0]['password'],
+                              articlesRead:
+                                  usersnapshot.data![0]['articlesRead'] + 1,
+                            );
+                            DbUser.updateData(
+                                snapshot: usersnapshot.data![0],
+                                itemuser: userbaru);
+                            Navigator.pushNamed(context, '/article',
+                                arguments: articles[index]);
+                          },
+                          highlightColor: Colors.grey[200],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Image.network(
+                                  articles[index].urlToImage ??
+                                      "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                                  width: 269,
+                                  height: 269,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              SizedBox(
+                                width: 269,
+                                child: Text(
+                                  articles[index].title ?? "",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "Sports",
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  color: const Color(0xFF6D6265),
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Image.network(
-                            articles[index].urlToImage ??
-                                "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
-                            width: 269,
-                            height: 269,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        SizedBox(
-                          width: 269,
-                          child: Text(
-                            articles[index].title ?? "",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: GoogleFonts.inter(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "Sports",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            color: const Color(0xFF6D6265),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      }),
                   separatorBuilder: (context, index) => const SizedBox(
                     width: 24,
                   ),

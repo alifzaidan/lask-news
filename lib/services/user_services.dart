@@ -13,8 +13,8 @@ class DbUser {
   }
 
   static Future<void> updateData(
-      {required String id, required UserModel itemuser}) async {
-    await user.doc(id).update(itemuser.toJson());
+      {required DocumentSnapshot snapshot, required UserModel itemuser}) async {
+    await user.doc(snapshot.id).update(itemuser.toJson());
   }
 
   static Future<List<QueryDocumentSnapshot<Object?>>> getUserByEmail(

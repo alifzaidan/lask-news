@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/myarticles_model.dart';
 import 'package:lask_news_app/services/bookmark_services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MyArticleDetailScreen extends StatelessWidget {
   const MyArticleDetailScreen({super.key});
@@ -145,7 +146,12 @@ class MyArticleDetailScreen extends StatelessWidget {
                 size: 20,
                 color: Colors.black,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await Share.share(
+                  article.url,
+                  subject: article.title,
+                );
+              },
             ),
           ],
         ),
