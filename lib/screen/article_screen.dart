@@ -10,7 +10,8 @@ import 'package:share_plus/share_plus.dart';
 
 // ignore: must_be_immutable
 class ArticleScreen extends StatelessWidget {
-  const ArticleScreen({super.key});
+  ArticleScreen({super.key});
+  bool isBookmarked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -132,23 +133,27 @@ class ArticleScreen extends StatelessWidget {
               stream: DbBookmark.getData(),
               builder: (context, snapshot) {
                 return IconButton(
-                  icon: const FaIcon(
-                    FontAwesomeIcons.bookmark,
+                  icon: FaIcon(
+                    isBookmarked
+                        ? FontAwesomeIcons.solidBookmark
+                        : FontAwesomeIcons.bookmark,
                     size: 20,
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    final barangbaru = BookmarkModel(
-                      title: article.title ?? "Judul Tidak Ada",
-                      author: article.author ?? "Author Tidak Ada",
-                      url: article.url ?? "URL Tidak Ada",
-                      urlToImage: article.urlToImage ??
-                          "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
-                      publishedAt: article.publishedAt ?? "No Date",
-                      content: article.content ?? "Deskripsi Tidak Ada",
-                    );
-                    DbBookmark.addData(itembookmark: barangbaru);
-                    Navigator.of(context).pop();
+                    if (!isBookmarked) {
+                      isBookmarked = true;
+                      final barangbaru = BookmarkModel(
+                        title: article.title ?? "Judul Tidak Ada",
+                        author: article.author ?? "Author Tidak Ada",
+                        url: article.url ?? "URL Tidak Ada",
+                        urlToImage: article.urlToImage ??
+                            "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                        publishedAt: article.publishedAt ?? "No Date",
+                        content: article.content ?? "Deskripsi Tidak Ada",
+                      );
+                      DbBookmark.addData(itembookmark: barangbaru);
+                    }
                   },
                 );
               },

@@ -73,35 +73,6 @@ class AboutUsScreen extends StatelessWidget {
               height: 150 / 100,
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
-          const Divider(),
-          const SizedBox(
-            height: 24,
-          ),
-          Text(
-            "Lask News App is made by:",
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              color: const Color(0xFF231F20),
-              fontWeight: FontWeight.w600,
-              height: 150 / 100,
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            "Muchammad Alif Zaidan\nEnggarani Wahyu Ekaputri",
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: 16,
-              color: const Color(0xFF231F20),
-              fontWeight: FontWeight.w400,
-              height: 150 / 100,
-            ),
-          ),
         ],
       ),
     );

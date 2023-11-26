@@ -24,4 +24,8 @@ class DbUser {
         .get()
         .then((value) => value.docs);
   }
+
+  static Future<void> deleteData(DocumentSnapshot<Object?> itemuser) async {
+    await user.doc(itemuser.id).delete();
+  }
 }

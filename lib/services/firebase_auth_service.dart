@@ -53,4 +53,9 @@ class FirebaseAuthService {
     }
     return null;
   }
+
+  static Future<void> deleteUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    await user!.delete();
+  }
 }

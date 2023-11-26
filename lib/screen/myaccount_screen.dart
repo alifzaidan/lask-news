@@ -156,27 +156,32 @@ class MyAccountScreen extends StatelessWidget {
                               color: const Color(0xFF6D6265),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // _auth.signOut();
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFE02607),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 12,
-                              ),
-                            ),
-                            child: Text(
-                              'Delete',
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                          StreamBuilder<QuerySnapshot>(
+                              stream: DbUser.getData(),
+                              builder: (context, snapshot) {
+                                return ElevatedButton(
+                                  onPressed: () {
+                                    FirebaseAuthService.deleteUser();
+                                    DbUser.deleteData(user);
+                                    Navigator.pushNamed(context, '/login');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFE02607),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 12,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Delete',
+                                    style: GoogleFonts.inter(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                );
+                              }),
                         ],
                       ),
                     ],

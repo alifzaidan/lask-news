@@ -16,7 +16,7 @@ class DbMyArticle {
     return _myarticle.snapshots();
   }
 
-  static Future<void> create(BuildContext context) async {
+  static Future<void> create(BuildContext context, author) async {
     _titleController.clear();
     _authorController.clear();
     _urlController.clear();
@@ -43,10 +43,6 @@ class DbMyArticle {
                 decoration: const InputDecoration(labelText: 'Title'),
               ),
               TextField(
-                controller: _authorController,
-                decoration: const InputDecoration(labelText: 'Author'),
-              ),
-              TextField(
                 controller: _urlController,
                 decoration: const InputDecoration(labelText: 'URL'),
               ),
@@ -63,12 +59,13 @@ class DbMyArticle {
                 onPressed: () async {
                   final newarticle = MyArticlesModel(
                     title: _titleController.text,
-                    author: _authorController.text,
+                    author: author,
                     url: _urlController.text,
                     urlToImage: _urlToImageController.text,
                     publishedAt: DateTime.now().toIso8601String(),
                     content: _contentController.text,
                   );
+                  Navigator.of(context).pop();
                   await _myarticle.add(newarticle.toJson());
                 },
                 child: const Text('Create'),
@@ -134,6 +131,8 @@ class DbMyArticle {
                   await _myarticle
                       .doc(snapshot.id)
                       .update(editarticle.toJson());
+
+                  Navigator.of(context).pop();
                 },
                 child: const Text('Update'),
               ),

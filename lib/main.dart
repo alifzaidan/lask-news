@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/explore': (context) => const ExploreScreen(),
         '/bookmark': (context) => const BookmarkScreen(),
-        '/article': (context) => const ArticleScreen(),
+        '/article': (context) => ArticleScreen(),
         '/articleb': (context) => const ArticleBScreen(),
         '/justforyou': (context) => const JustForYouScreen(),
         '/myarticles': (context) => const MyArticleScreen(),
