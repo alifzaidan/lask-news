@@ -14,6 +14,22 @@ class MyArticleScreen extends StatefulWidget {
 }
 
 class _MyArticleScreenState extends State<MyArticleScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  bool isSearchClicked = false;
+  String searchText = '';
+
+  void _onSearchText(String value) {
+    setState(() {
+      searchText = value;
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,15 +58,38 @@ class _MyArticleScreenState extends State<MyArticleScreen> {
     return AppBar(
       title: Padding(
         padding: const EdgeInsets.only(left: 8.0),
-        child: Text(
-          "My Article",
-          style: GoogleFonts.inter(
-            fontSize: 26,
-            color: const Color(0xFF231F20),
-            fontWeight: FontWeight.w600,
-            height: 150 / 100,
-          ),
-        ),
+        child: isSearchClicked
+            ? Container(
+                height: 46,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: _onSearchText,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    hintStyle: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: const Color(0xFF6D6265),
+                    ),
+                    border: InputBorder.none,
+                    hintText: "Search..",
+                  ),
+                ),
+              )
+            : Text(
+                "My Articles",
+                style: GoogleFonts.inter(
+                  fontSize: 28,
+                  color: const Color(0xFF231F20),
+                  fontWeight: FontWeight.w600,
+                  height: 150 / 100,
+                ),
+              ),
       ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(10),
@@ -61,8 +100,19 @@ class _MyArticleScreenState extends State<MyArticleScreen> {
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: IconButton(
-            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass, size: 20),
-            onPressed: () {},
+            icon: FaIcon(
+                isSearchClicked
+                    ? FontAwesomeIcons.xmark
+                    : FontAwesomeIcons.magnifyingGlass,
+                size: 20),
+            onPressed: () {
+              setState(() {
+                isSearchClicked = !isSearchClicked;
+                if (isSearchClicked) {
+                  _searchController.clear();
+                }
+              });
+            },
           ),
         ),
       ],
@@ -71,7 +121,9 @@ class _MyArticleScreenState extends State<MyArticleScreen> {
 
   Widget _listnews() {
     return StreamBuilder<QuerySnapshot>(
-      stream: DbMyArticle.getData(),
+      stream: isSearchClicked
+          ? DbMyArticle.searchArticle(searchText)
+          : DbMyArticle.getData(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.separated(

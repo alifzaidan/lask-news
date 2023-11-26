@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/article_model.dart';
@@ -45,7 +44,7 @@ class _JustForYouScreenState extends State<JustForYouScreen> {
         child: Text(
           "Just For You",
           style: GoogleFonts.inter(
-            fontSize: 26,
+            fontSize: 28,
             color: const Color(0xFF231F20),
             fontWeight: FontWeight.w600,
             height: 150 / 100,
@@ -57,15 +56,6 @@ class _JustForYouScreenState extends State<JustForYouScreen> {
         child: Container(),
       ),
       backgroundColor: const Color(0xFFE9EEFA),
-      actions: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: IconButton(
-            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass, size: 20),
-            onPressed: () {},
-          ),
-        ),
-      ],
     );
   }
 

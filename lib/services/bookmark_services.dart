@@ -17,7 +17,7 @@ class DbBookmark {
     await bookmark.doc(article.id).delete();
   }
 
-  static Future<void> searchBookmark(String title) async {
-    await bookmark.where('title', isEqualTo: title).get();
+  static Stream<QuerySnapshot> searchBookmark(String title) {
+    return bookmark.where("title", isEqualTo: title).snapshots();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lask_news_app/models/article_model.dart';
@@ -7,15 +6,6 @@ import 'package:lask_news_app/models/user_model.dart';
 import 'package:lask_news_app/services/api_services.dart';
 import 'package:lask_news_app/services/firebase_auth_service.dart';
 import 'package:lask_news_app/services/user_services.dart';
-
-var category = [
-  "Travel",
-  "Technology",
-  "Bussines",
-  "Economy",
-  "Healthy",
-  "Sports"
-];
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -39,10 +29,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
               const SizedBox(
                 height: 16,
               ),
-              _category(),
-              const SizedBox(
-                height: 24,
-              ),
               _news(),
             ],
           ),
@@ -58,7 +44,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         child: Text(
           "Explore",
           style: GoogleFonts.inter(
-            fontSize: 32,
+            fontSize: 28,
             color: const Color(0xFF231F20),
             fontWeight: FontWeight.w600,
             height: 150 / 100,
@@ -71,38 +57,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
       ),
       backgroundColor: const Color(0xFFE9EEFA),
       automaticallyImplyLeading: false,
-      actions: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: IconButton(
-            icon: const FaIcon(FontAwesomeIcons.magnifyingGlass, size: 20),
-            onPressed: () {},
-          ),
-        ),
-      ],
-    );
-  }
-
-  SizedBox _category() {
-    return SizedBox(
-      height: 30,
-      child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          itemBuilder: (context, index) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE9EEFA),
-                  borderRadius: BorderRadius.circular(56),
-                ),
-                child: Center(
-                  child: Text(category[index]),
-                ),
-              ),
-          separatorBuilder: (context, index) => const SizedBox(
-                width: 10,
-              ),
-          itemCount: category.length),
     );
   }
 

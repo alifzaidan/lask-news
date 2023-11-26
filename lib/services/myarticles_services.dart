@@ -155,4 +155,8 @@ class DbMyArticle {
       ),
     );
   }
+
+  static Stream<QuerySnapshot> searchArticle(String title) {
+    return _myarticle.where("title", isEqualTo: title).snapshots();
+  }
 }
