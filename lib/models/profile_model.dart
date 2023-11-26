@@ -8,25 +8,14 @@ class ProfileModel {
   });
 }
 
-var profiles = [
-  ProfileModel(
-    page: "Clapped Articles",
-    route: "/claped",
-  ),
-  ProfileModel(
-    page: "My Articles",
-    route: "/myarticles",
-  ),
-];
-
 var settings = [
   ProfileModel(
     page: "My Account",
     route: "/account",
   ),
   ProfileModel(
-    page: "Privacy Settings",
-    route: "/privacy",
+    page: "My Articles",
+    route: "/myarticles",
   ),
   ProfileModel(
     page: "About Us",

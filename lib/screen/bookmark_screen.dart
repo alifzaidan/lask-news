@@ -78,7 +78,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
             : Text(
                 "Bookmark",
                 style: GoogleFonts.inter(
-                  fontSize: 32,
+                  fontSize: 28,
                   color: const Color(0xFF231F20),
                   fontWeight: FontWeight.w600,
                   height: 150 / 100,

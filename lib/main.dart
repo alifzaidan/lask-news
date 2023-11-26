@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:lask_news_app/screen/aboutus_screen.dart';
 import 'package:lask_news_app/screen/article_b_screen.dart';
 import 'package:lask_news_app/screen/justforyou_screen.dart';
+import 'package:lask_news_app/screen/myaccount_screen.dart';
 import 'package:lask_news_app/screen/myarticle_d_screen.dart';
 import 'package:lask_news_app/screen/myarticle_screen.dart';
 import 'firebase_options.dart';
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
         '/justforyou': (context) => const JustForYouScreen(),
         '/myarticles': (context) => const MyArticleScreen(),
         '/myarticle': (context) => const MyArticleDetailScreen(),
+        '/account': (context) => MyAccountScreen(),
+        '/aboutus': (context) => const AboutUsScreen(),
       },
     );
   }

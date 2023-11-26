@@ -34,8 +34,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              _pages('Reading History', profiles),
-              _pages('Settings', settings),
+              _pages(),
               _logout(context),
             ],
           ),
@@ -66,79 +65,96 @@ class ProfileScreen extends StatelessWidget {
                 badge = "Knowledgeable";
               }
 
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/photo.jpg'),
-                        radius: 50,
-                      ),
-                      const SizedBox(
-                        width: 24,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user['name'],
-                            style: GoogleFonts.inter(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 0,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                  color: const Color(0xFFE9EEFA),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const CircleAvatar(
+                          backgroundImage:
+                              AssetImage('assets/images/photo.jpg'),
+                          radius: 50,
+                        ),
+                        const SizedBox(
+                          width: 24,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user['name'],
+                              style: GoogleFonts.inter(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Text(
-                            badge,
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: const Color(0xFF2D5BD0),
+                            Text(
+                              badge,
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: const Color(0xFF2D5BD0),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Article Read',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: const Color(0xFF6D6265),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Article Read',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: const Color(0xFF6D6265),
+                              ),
                             ),
-                          ),
-                          Text(
-                            user['articlesRead'].toString(),
-                            style: GoogleFonts.inter(
-                                fontSize: 24, fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            'Level',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: const Color(0xFF6D6265),
+                            Text(
+                              user['articlesRead'].toString(),
+                              style: GoogleFonts.inter(
+                                  fontSize: 24, fontWeight: FontWeight.w600),
                             ),
-                          ),
-                          Text(
-                            level.toString(),
-                            style: GoogleFonts.inter(
-                                fontSize: 24, fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              'Level',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: const Color(0xFF6D6265),
+                              ),
+                            ),
+                            Text(
+                              level.toString(),
+                              style: GoogleFonts.inter(
+                                  fontSize: 24, fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               );
             } else if (snapshot.hasError) {
               return Text('Error retrieving user data: ${snapshot.error}');
@@ -149,14 +165,14 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Container _pages(String title, List<ProfileModel> page) {
+  Container _pages() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            "Settings",
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -166,13 +182,13 @@ class ProfileScreen extends StatelessWidget {
             height: 8,
           ),
           SizedBox(
-            height: 48 * (page.length).toDouble(),
+            height: 48 * (settings.length).toDouble(),
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, page[index].route);
+                  Navigator.pushNamed(context, settings[index].route);
                 },
                 child: SizedBox(
                   height: 42,
@@ -180,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        page[index].page,
+                        settings[index].page,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                         ),
@@ -193,7 +209,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              itemCount: page.length,
+              itemCount: settings.length,
             ),
           ),
         ],
@@ -203,14 +219,14 @@ class ProfileScreen extends StatelessWidget {
 
   Container _logout(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       child: ElevatedButton(
         onPressed: () {
           _auth.signOut();
           Navigator.pushNamed(context, '/login');
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
+          backgroundColor: const Color(0xFFE02607),
           padding: const EdgeInsets.symmetric(
             horizontal: 24,
             vertical: 16,
