@@ -143,7 +143,7 @@ class _JustForYouScreenState extends State<JustForYouScreen> {
                           ),
                           child: Image.network(
                             articles[index].urlToImage ??
-                                "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                                "https://xkotosingkarak.solokkab.go.id/asset/foto_berita/no-image.jpg",
                             width: 112,
                             height: 80,
                             fit: BoxFit.cover,

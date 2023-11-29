@@ -28,7 +28,7 @@ class ArticleScreen extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 background: Image.network(
                   article.urlToImage ??
-                      "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                      "https://xkotosingkarak.solokkab.go.id/asset/foto_berita/no-image.jpg",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -148,7 +148,7 @@ class ArticleScreen extends StatelessWidget {
                         author: article.author ?? "Author Tidak Ada",
                         url: article.url ?? "URL Tidak Ada",
                         urlToImage: article.urlToImage ??
-                            "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                            "https://xkotosingkarak.solokkab.go.id/asset/foto_berita/no-image.jpg",
                         publishedAt: article.publishedAt ?? "No Date",
                         content: article.content ?? "Deskripsi Tidak Ada",
                       );

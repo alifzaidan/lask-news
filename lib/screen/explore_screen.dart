@@ -119,7 +119,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                     child: Image.network(
                       articles?[0].urlToImage ??
-                          "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                          "https://xkotosingkarak.solokkab.go.id/asset/foto_berita/no-image.jpg",
                       width: double.maxFinite,
                       height: 206,
                       fit: BoxFit.cover,
@@ -258,7 +258,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     ),
                     child: Image.network(
                       articles[index + 1].urlToImage ??
-                          "https://www.recia.fr/wp-content/uploads/2019/09/no_image.png",
+                          "https://xkotosingkarak.solokkab.go.id/asset/foto_berita/no-image.jpg",
                       width: 112,
                       height: 80,
                       fit: BoxFit.cover,
