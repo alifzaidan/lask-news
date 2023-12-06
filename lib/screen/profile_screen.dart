@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
               } else if (user['articlesRead'] < 20) {
                 level = 2;
                 badge = "Critical Thinker";
-              } else if (user['articlesRead'] < 30) {
+              } else if (user['articlesRead'] >= 20) {
                 level = 3;
                 badge = "Knowledgeable";
               }
