@@ -15,21 +15,29 @@ class ExploreScreen extends StatefulWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
-  ApiHeadline headline = ApiHeadline();
+  ApiTechnology technology = ApiTechnology();
+  ApiSports sports = ApiSports();
+  ApiHealth health = ApiHealth();
   final FirebaseAuthService _authService = FirebaseAuthService();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: _appBar(),
+          body: TabBarView(
             children: [
-              const SizedBox(
-                height: 16,
+              SingleChildScrollView(
+                child: _news(technology.getArticle()),
               ),
-              _news(),
+              SingleChildScrollView(
+                child: _news(sports.getArticle()),
+              ),
+              SingleChildScrollView(
+                child: _news(health.getArticle()),
+              ),
             ],
           ),
         ),
@@ -51,24 +59,37 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ),
         ),
       ),
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(10),
-        child: Container(),
+      bottom: const TabBar(
+        labelColor: Colors.black,
+        tabs: [
+          Tab(
+            text: "Technology",
+          ),
+          Tab(
+            text: "Sports",
+          ),
+          Tab(
+            text: "Health",
+          ),
+        ],
       ),
       backgroundColor: const Color(0xFFE9EEFA),
       automaticallyImplyLeading: false,
     );
   }
 
-  Widget _news() {
+  Widget _news(Future<List<Article>> article) {
     return FutureBuilder(
-      future: headline.getArticle(),
+      future: article,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Article>? articles = snapshot.data;
 
           return Column(
             children: [
+              const SizedBox(
+                height: 24,
+              ),
               _headline(articles),
               const SizedBox(
                 height: 36,
